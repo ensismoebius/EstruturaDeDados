@@ -1,0 +1,38 @@
+/*
+ * list
+ *
+ *  Created on: 21 de mar de 2019
+ *      Author: André Furlan
+ */
+
+#ifndef LIB_LIST_
+#define LIB_LIST_
+
+typedef struct li {
+	double* value;
+	struct li* next;
+	struct li* previous;
+} listItem;
+
+typedef struct l {
+	int* size;
+	struct li* last;
+	struct li* first;
+} list;
+
+/**
+ * Creates a list and returns a pointer
+ * to the first item
+ */
+list *createList(double firstValue);
+
+listItem *addNextItem(list *list, double value);
+listItem *findOneByIndex(list *list, int index);
+listItem *findOneByValue(list *list, double value);
+listItem *addAfter(list *list, int index, double value);
+
+void showAll(list *list);
+void deleteByIndex(list *list, int index);
+void swapItems(list *list, int indexOne, int indexTwo);
+
+#endif /* LIB_LIST_ */
