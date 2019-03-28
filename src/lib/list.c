@@ -7,19 +7,13 @@
  * Creates a list and returns a pointer
  * to the first item
  */
-list *createList(double firstValue) {
-
-	listItem *i = malloc(sizeof(listItem));
-	i->value = malloc(sizeof(double));
-	*i->value = firstValue;
-	i->previous = NULL;
-	i->next = NULL;
+list *createList() {
 
 	list *l = malloc(sizeof(list));
-	l->first = i;
-	l->last = i;
+	l->first = NULL;
+	l->last = NULL;
 	l->size = malloc(sizeof(int));
-	*l->size = 1;
+	*l->size = 0;
 
 	return l;
 }
@@ -38,11 +32,16 @@ listItem *addNextItem(list *list, double value) {
 	nextItem->next = NULL;
 	nextItem->previous = list->last;
 
-	list->last->next = nextItem;
+	if (list->last != NULL)
+		list->last->next = nextItem;
+
+	if (list->first == NULL)
+		list->first = nextItem;
+
 	list->last = nextItem;
 
 	// add one to size
-	*list->size = *list->size + 1;
+	*list->size += 1;
 
 	return nextItem;
 }
@@ -249,3 +248,50 @@ void joinLists(list* list1, list* list2) {
 	list2->size = list1->size;
 }
 
+listItem *push(list *list, double value) {
+	return addNextItem(list, value);
+}
+
+listItem *pop(list *list) {
+	listItem* item = list->last;
+
+	if (item == NULL)
+		return NULL;
+
+	if (item->previous != NULL) {
+		list->last = item->previous;
+		item->previous->next = NULL;
+	} else {
+		list->last = list->first = NULL;
+	}
+
+	// item->previous = NULL;
+	*list->size += -1;
+
+	return item;
+}
+
+/**
+ * Erase entire list
+ */
+void clearList(list *list) {
+
+	if (list == NULL) {
+		return;
+	}
+
+	listItem* l = list->last;
+	listItem* b = NULL;
+
+	while (l != NULL) {
+		b = l->previous;
+
+		free(l->value);
+		free(l);
+
+		l = b;
+	}
+
+	*list->size = 0;
+	list->first = list->last = NULL;
+}
