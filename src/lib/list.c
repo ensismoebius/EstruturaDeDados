@@ -51,7 +51,7 @@ listItem *addNextItem(list *list, double value) {
  */
 void showAll(list *list) {
 
-	if (list->size == NULL) {
+	if (list->size == 0) {
 		printf("Empty list\n");
 		return;
 	}

@@ -42,10 +42,11 @@ int main(int argc, char **argv) {
 	pop(list3);
 	pop(list3);
 	pop(list3);
-	pop(list3);
-	pop(list3);
 
 	showAll(list3);
 
+	clearList(list3);
+
+	showAll(list3);
 	return 0;
 }

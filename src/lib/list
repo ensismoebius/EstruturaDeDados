@@ -20,6 +20,10 @@ typedef struct l {
 	struct li* first;
 } list;
 
+/**
+ * Creates a list and returns a pointer
+ * to the first item
+ */
 list *createList();
 
 listItem *pop(list *list);
