@@ -226,3 +226,26 @@ void swapItems(list *list, int indexOne, int indexTwo) {
 	two->previous = one->previous;
 	one->previous = item;
 }
+
+/**
+ * Join list2 and list1, they become one forever S2...
+ */
+void joinLists(list* list1, list* list2) {
+
+	if (list1->last == NULL || list2->first == NULL) {
+		return;
+	}
+
+	list1->last->next = list2->first;
+	list2->first->previous = list1->last;
+
+	list1->last = list2->last;
+	list2->first = list1->first;
+
+	*list1->size += *list2->size;
+
+	free(list2->size);
+
+	list2->size = list1->size;
+}
+

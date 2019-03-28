@@ -32,6 +32,7 @@ listItem *findOneByValue(list *list, double value);
 listItem *addAfter(list *list, int index, double value);
 
 void showAll(list *list);
+void joinLists(list* list1, list* list2);
 void deleteByIndex(list *list, int index);
 void swapItems(list *list, int indexOne, int indexTwo);
 
