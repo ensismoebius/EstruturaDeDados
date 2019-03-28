@@ -5,8 +5,8 @@
  *      Author: André Furlan
  */
 
-#ifndef LIB_LIST_
-#define LIB_LIST_
+#ifndef LIB_LINKEDLIST_
+#define LIB_LINKEDLIST_
 
 typedef struct li {
 	double* value;
@@ -40,4 +40,4 @@ void joinLists(list* list1, list* list2);
 void deleteByIndex(list *list, int index);
 void swapItems(list *list, int indexOne, int indexTwo);
 
-#endif /* LIB_LIST_ */
+#endif /* LIB_LINKEDLIST_ */

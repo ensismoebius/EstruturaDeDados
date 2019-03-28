@@ -1,4 +1,4 @@
-#include "lib/list"
+#include "lib/linkedList"
 
 int main(int argc, char **argv) {
 	list* list2 = createList();
