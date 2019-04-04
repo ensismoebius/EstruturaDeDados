@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "lib/linkedList"
+#include "lib/linkedList.h"
 #include "lib/strFuncs.h"
 
 double applyOperation(char operation, double firstNumber, double secondNumber) {
@@ -82,8 +82,8 @@ float evaluateExpression(char* tokens, int length) {
 
 		// Closing brace encountered, solve entire brace
 		if (tokens[i] == ')') {
-			while (peek(ops) != '(') {
-				push(values, applyOperation(pop(ops), pop(values), pop(values)));
+			while (((char)peek(ops)) != '(') {
+				push(values, applyOperation(((char)pop(ops)), pop(values), pop(values)));
 			}
 			pop(ops);
 			continue;
@@ -120,7 +120,6 @@ int main(int argc, char **argv) {
 	float result = evaluateExpression(texto);
 
 	printf("%f", result);
-	gets();
 //	trim(texto);
 //	puts(texto);
 
