@@ -90,11 +90,7 @@ float evaluateExpression(char* tokens, int length) {
 		if (tokens[i] == ')') {
 
 			while (((char) *(peek(ops)->value)) != '(') {
-				char op = (char) *(pop(ops)->value);
-				double val1 = *(pop(values)->value);
-				double val2 = *(pop(values)->value);
-
-				push(values, applyOperation(op, val1, val2));
+				push(values, applyOperation((char) *(pop(ops)->value), *(pop(values)->value), *(pop(values)->value)));
 			}
 			pop(ops);
 			continue;

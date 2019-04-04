@@ -4,9 +4,9 @@
 
 int main(int argc, char **argv) {
 
-	char texto[] = "(1+2)*4";
+	char texto[] = "((1+2)*4)-11";
 
-	float result = evaluateExpression(texto, 6);
+	float result = evaluateExpression(texto, 12);
 
 	printf("%f", result);
 //	trim(texto);
