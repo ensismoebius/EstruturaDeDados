@@ -271,6 +271,11 @@ listItem *pop(list *list) {
 	return item;
 }
 
+
+listItem *peek(list *list) {
+	return list->last;
+}
+
 /**
  * Erase entire list
  */
