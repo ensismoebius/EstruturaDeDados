@@ -26,6 +26,8 @@ typedef struct l {
  */
 list *createList();
 
+char empty(list *list);
+
 listItem *pop(list *list);
 listItem *peek(list *list);
 listItem *push(list *list, double value);

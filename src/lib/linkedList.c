@@ -19,6 +19,13 @@ list *createList() {
 }
 
 /**
+ * The list is empty?
+ */
+char empty(list *list) {
+	return list->first == NULL;
+}
+
+/**
  * Adds an item to the list and returns
  * a pointer to the added value
  */
@@ -270,7 +277,6 @@ listItem *pop(list *list) {
 
 	return item;
 }
-
 
 listItem *peek(list *list) {
 	return list->last;
