@@ -319,7 +319,19 @@ listItem *addBTreeItem(listItem *bTreeRoot, double value) {
 
 	return newItem;
 }
-listItem *findBtreeItem(listItem *bTreeRoot, double index) {
+listItem *findBtreeItem(listItem *bTreeRoot, double value) {
+
+	// We got it!!
+	if (*bTreeRoot->value == value) return bTreeRoot;
+
+	// Not yet: Trying another branches
+	if (value > *bTreeRoot->value) {
+		findBtreeItem(bTreeRoot->next, value);
+	} else {
+		findBtreeItem(bTreeRoot->previous, value);
+	}
+
+	// Nothing found!
 	return NULL;
 }
 listItem *removeBTreeItem(listItem *bTreeRoot, double value) {
@@ -360,13 +372,25 @@ void addBtreeLeaf(listItem *bTreeRoot, listItem *item) {
 }
 
 void showAllInOrderRecursive(listItem *bTreeRoot) {
-
+	if (bTreeRoot == NULL) return;
+	showAllInOrderRecursive(bTreeRoot->previous);
+	printf("%f\n", *bTreeRoot->value);
+	showAllInOrderRecursive(bTreeRoot->next);
+	printf("%f\n", *bTreeRoot->value);
 }
 void showAllPreOrderRecursive(listItem *bTreeRoot) {
-
+	if (bTreeRoot == NULL) return;
+	printf("%f\n", *bTreeRoot->value);
+	showAllInOrderRecursive(bTreeRoot->previous);
+	showAllInOrderRecursive(bTreeRoot->next);
+	printf("%f\n", *bTreeRoot->value);
 }
 void showAllPostOrderRecursive(listItem *bTreeRoot) {
-
+	if (bTreeRoot == NULL) return;
+	showAllInOrderRecursive(bTreeRoot->previous);
+	showAllInOrderRecursive(bTreeRoot->next);
+	printf("%f\n", *bTreeRoot->value);
+	printf("%f\n", *bTreeRoot->value);
 }
 
 void showAllInOrderIterative(listItem *bTreeRoot) {

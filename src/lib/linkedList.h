@@ -57,7 +57,7 @@ void swapItems(list *list, int indexOne, int indexTwo);
 void addBtreeLeaf(listItem *bTreeRoot, listItem *item);
 
 listItem *addBTreeItem(listItem *bTreeRoot, double value);
-listItem *findBtreeItem(listItem *bTreeRoot, double index);
+listItem *findBtreeItem(listItem *bTreeRoot, double value);
 listItem *removeBTreeItem(listItem *bTreeRoot, double value);
 
 // Recursive methods
@@ -66,9 +66,9 @@ void showAllPreOrderRecursive(listItem *bTreeRoot);
 void showAllPostOrderRecursive(listItem *bTreeRoot);
 
 // Iterative methods
-void showAllInOrderIterative(list *list);
-void showAllPreOrderIterative(list *list);
-void showAllPostOrderIterative(list *list);
+void showAllInOrderIterative(listItem *bTreeRoot);
+void showAllPreOrderIterative(listItem *bTreeRoot);
+void showAllPostOrderIterative(listItem *bTreeRoot);
 
 /*
  * You can use this for all types
