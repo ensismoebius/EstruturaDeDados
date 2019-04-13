@@ -376,20 +376,17 @@ void showAllInOrderRecursive(listItem *bTreeRoot) {
 	showAllInOrderRecursive(bTreeRoot->previous);
 	printf("%f\n", *bTreeRoot->value);
 	showAllInOrderRecursive(bTreeRoot->next);
-	printf("%f\n", *bTreeRoot->value);
 }
 void showAllPreOrderRecursive(listItem *bTreeRoot) {
 	if (bTreeRoot == NULL) return;
 	printf("%f\n", *bTreeRoot->value);
 	showAllInOrderRecursive(bTreeRoot->previous);
 	showAllInOrderRecursive(bTreeRoot->next);
-	printf("%f\n", *bTreeRoot->value);
 }
 void showAllPostOrderRecursive(listItem *bTreeRoot) {
 	if (bTreeRoot == NULL) return;
 	showAllInOrderRecursive(bTreeRoot->previous);
 	showAllInOrderRecursive(bTreeRoot->next);
-	printf("%f\n", *bTreeRoot->value);
 	printf("%f\n", *bTreeRoot->value);
 }
 
