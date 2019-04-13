@@ -39,11 +39,9 @@ listItem *addNextItem(list *list, double value) {
 	nextItem->next = NULL;
 	nextItem->previous = list->last;
 
-	if (list->last != NULL)
-		list->last->next = nextItem;
+	if (list->last != NULL) list->last->next = nextItem;
 
-	if (list->first == NULL)
-		list->first = nextItem;
+	if (list->first == NULL) list->first = nextItem;
 
 	list->last = nextItem;
 
@@ -155,8 +153,7 @@ listItem *addAfter(list *list, int index, double value) {
 
 	listItem* current = findOneByIndex(list, index);
 
-	if (current == NULL)
-		return NULL;
+	if (current == NULL) return NULL;
 
 	// New inserted item
 	listItem* newItem = malloc(sizeof(listItem));
@@ -262,8 +259,7 @@ listItem *push(list *list, double value) {
 listItem *pop(list *list) {
 	listItem* item = list->last;
 
-	if (item == NULL)
-		return NULL;
+	if (item == NULL) return NULL;
 
 	if (item->previous != NULL) {
 		list->last = item->previous;
@@ -306,3 +302,34 @@ void clearList(list *list) {
 	*list->size = 0;
 	list->first = list->last = NULL;
 }
+
+listItem *addBTreeItem(list *list, double value) {
+	return NULL;
+}
+listItem *findBtreeItem(list *list, double index) {
+	return NULL;
+}
+listItem *removeBTreeItem(list *list, double value) {
+	return NULL;
+}
+
+void showAllInOrderRecursive(list *list) {
+
+}
+void showAllPreOrderRecursive(list *list) {
+
+}
+void showAllPostOrderRecursive(list *list) {
+
+}
+
+void showAllInOrderIteractive(list *list) {
+
+}
+void showAllPreOrderIteractive(list *list) {
+
+}
+void showAllPostOrderIteractive(list *list) {
+
+}
+
