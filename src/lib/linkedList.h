@@ -54,21 +54,26 @@ void swapItems(list *list, int indexOne, int indexTwo);
  * Use this if you want that the list
  * behaves like a binary tree
  */
-listItem *addBTreeItem(list *list, double value);
-listItem *findBtreeItem(list *list, double index);
-listItem *removeBTreeItem(list *list, double value);
+void addBtreeLeaf(listItem *bTreeRoot, listItem *item);
 
-void showAllInOrderRecursive(list *list);
-void showAllPreOrderRecursive(list *list);
-void showAllPostOrderRecursive(list *list);
+listItem *addBTreeItem(listItem *bTreeRoot, double value);
+listItem *findBtreeItem(listItem *bTreeRoot, double index);
+listItem *removeBTreeItem(listItem *bTreeRoot, double value);
 
-void showAllInOrderIteractive(list *list);
-void showAllPreOrderIteractive(list *list);
-void showAllPostOrderIteractive(list *list);
+// Recursive methods
+void showAllInOrderRecursive(listItem *bTreeRoot);
+void showAllPreOrderRecursive(listItem *bTreeRoot);
+void showAllPostOrderRecursive(listItem *bTreeRoot);
+
+// Iterative methods
+void showAllInOrderIterative(list *list);
+void showAllPreOrderIterative(list *list);
+void showAllPostOrderIterative(list *list);
 
 /*
  * You can use this for all types
  */
 void showAll(list *list);
+listItem *createItem(double value);
 
 #endif /* LIB_LINKEDLIST_ */

@@ -4,8 +4,17 @@
 #include <stdlib.h>
 
 /**
- * Creates a list and returns a pointer
- * to the first item
+ * Creates an listItem and returns a pointer to it
+ */
+listItem *createItem(double value) {
+	listItem *newItem = malloc(sizeof(listItem));
+	newItem->value = malloc(sizeof(double));
+	*newItem->value = value;
+	return newItem;
+}
+
+/**
+ * Creates a list and returns a pointer to it
  */
 list *createList() {
 
@@ -31,9 +40,7 @@ char empty(list *list) {
  */
 listItem *addNextItem(list *list, double value) {
 	// Create Item
-	listItem* nextItem = malloc(sizeof(listItem));
-	nextItem->value = malloc(sizeof(double));
-	*nextItem->value = value;
+	listItem* nextItem = createItem(value);
 
 	// "Puts" the item at the end
 	nextItem->next = NULL;
@@ -138,9 +145,7 @@ listItem *addAfter(list *list, int index, double value) {
 		listItem* current = findOneByIndex(list, 0);
 
 		// New inserted item
-		listItem* newItem = malloc(sizeof(listItem));
-		newItem->value = malloc(sizeof(double));
-		*newItem->value = value;
+		listItem* newItem = createItem(value);
 
 		newItem->next = current;
 		current->previous = newItem;
@@ -156,9 +161,7 @@ listItem *addAfter(list *list, int index, double value) {
 	if (current == NULL) return NULL;
 
 	// New inserted item
-	listItem* newItem = malloc(sizeof(listItem));
-	newItem->value = malloc(sizeof(double));
-	*newItem->value = value;
+	listItem* newItem = createItem(value);
 
 	// the backup of the next item
 	listItem* currentNextBackup = current->next;
@@ -303,33 +306,76 @@ void clearList(list *list) {
 	list->first = list->last = NULL;
 }
 
-listItem *addBTreeItem(list *list, double value) {
+listItem *addBTreeItem(listItem *bTreeRoot, double value) {
+
+	// Create new item
+	listItem* newItem = createItem(value);
+
+	// There is no item in binary tree, create the root
+	if (bTreeRoot == NULL) return newItem;
+
+	// There is already some items add to the final
+	addBtreeLeaf(bTreeRoot, newItem);
+
+	return newItem;
+}
+listItem *findBtreeItem(listItem *bTreeRoot, double index) {
 	return NULL;
 }
-listItem *findBtreeItem(list *list, double index) {
-	return NULL;
-}
-listItem *removeBTreeItem(list *list, double value) {
+listItem *removeBTreeItem(listItem *bTreeRoot, double value) {
 	return NULL;
 }
 
-void showAllInOrderRecursive(list *list) {
+/**
+ * Don't use this, instead use addBTreeItem
+ * @see addBTreeItem
+ */
+void addBtreeLeaf(listItem *bTreeRoot, listItem *item) {
+
+	if (*bTreeRoot->value == *item->value) {
+		printf("Can't add existing values!");
+		return;
+	}
+
+	if (*item->value > *bTreeRoot->value) {
+		if (bTreeRoot->next == NULL) {
+			bTreeRoot->next = item;
+			return;
+		}
+
+		addBtreeLeaf(bTreeRoot->next, item);
+		return;
+	}
+
+	if (*item->value < *bTreeRoot->value) {
+		if (bTreeRoot->previous == NULL) {
+			bTreeRoot->previous = item;
+			return;
+		}
+
+		addBtreeLeaf(bTreeRoot->previous, item);
+		return;
+	}
 
 }
-void showAllPreOrderRecursive(list *list) {
+
+void showAllInOrderRecursive(listItem *bTreeRoot) {
 
 }
-void showAllPostOrderRecursive(list *list) {
+void showAllPreOrderRecursive(listItem *bTreeRoot) {
+
+}
+void showAllPostOrderRecursive(listItem *bTreeRoot) {
 
 }
 
-void showAllInOrderIteractive(list *list) {
+void showAllInOrderIterative(listItem *bTreeRoot) {
 
 }
-void showAllPreOrderIteractive(list *list) {
+void showAllPreOrderIterative(listItem *bTreeRoot) {
 
 }
-void showAllPostOrderIteractive(list *list) {
+void showAllPostOrderIterative(listItem *bTreeRoot) {
 
 }
 
