@@ -34,16 +34,16 @@ char empty(list *list);
  */
 listItem *pop(list *list);
 listItem *peek(list *list);
-listItem *push(list *list, double value);
+listItem *push(list *list, listItem *item);
 
 /*
  * If you want that the list behaves like a regular
  * list use this
  */
-listItem *addNextItem(list *list, double value);
+listItem *addNextItem(list *list, listItem *item);
 listItem *findOneByIndex(list *list, int index);
 listItem *findOneByValue(list *list, double value);
-listItem *addAfter(list *list, int index, double value);
+listItem *addAfter(list *list, int index, listItem *item);
 
 void clearList(list *list);
 void joinLists(list* list1, list* list2);
@@ -54,11 +54,12 @@ void swapItems(list *list, int indexOne, int indexTwo);
  * Use this if you want that the list
  * behaves like a binary tree
  */
+void clearBtree(listItem *bTreeRoot);
 void addBtreeLeaf(listItem *bTreeRoot, listItem *item);
+void removeBTreeItem(listItem *bTreeRoot, double value);
 
 listItem *addBTreeItem(listItem *bTreeRoot, double value);
 listItem *findBtreeItem(listItem *bTreeRoot, double value);
-listItem *removeBTreeItem(listItem *bTreeRoot, double value);
 
 // Recursive methods
 void showAllInOrderRecursive(listItem *bTreeRoot);

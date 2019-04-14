@@ -2,20 +2,21 @@
 
 int main(int argc, char **argv) {
 
-	listItem *root = createItem(10);
+	listItem *root = createItem('e');
 
-	addBTreeItem(root, 11);
-	addBTreeItem(root, 9);
-	addBTreeItem(root, 12);
-	addBTreeItem(root, 8);
-	addBTreeItem(root, 13);
-	addBTreeItem(root, 7);
-	addBTreeItem(root, 14);
-	addBTreeItem(root, 6);
-	addBTreeItem(root, 15);
-	addBTreeItem(root, 5);
+	addBTreeItem(root, 'b');
+	addBTreeItem(root, 'a');
+	addBTreeItem(root, 'c');
+	addBTreeItem(root, 'd');
+	addBTreeItem(root, 'g');
+	addBTreeItem(root, 'f');
+	addBTreeItem(root, 'h');
+	addBTreeItem(root, 'i');
 
-	showAllPostOrderRecursive(root);
+	showAllPostOrderIterative(root);
+
+
+
 
 	return 0;
 }

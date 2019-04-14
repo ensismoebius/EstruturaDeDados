@@ -3,27 +3,35 @@
 #include "linkedList.h"
 #include "strFuncs.h"
 
-double applyOperation(char operation, double firstNumber, double secondNumber) {
+listItem *applyOperation(listItem *operation, listItem *firstNumber, listItem *secondNumber) {
 
 	double result = 0;
 
-	switch (operation) {
+	char op = (char) *operation->value;
+	double fn = *firstNumber->value;
+	double sn = *secondNumber->value;
+
+	free(operation);
+	free(firstNumber);
+	free(secondNumber);
+
+	switch (op) {
 	case '+':
-		result = firstNumber + secondNumber;
+		result = fn + sn;
 		break;
 	case '-':
-		result = firstNumber - secondNumber;
+		result = fn - sn;
 		break;
 	case '*':
-		result = firstNumber * secondNumber;
+		result = fn * sn;
 		break;
 	case '/':
-		if (secondNumber == 0) {
+		if (sn == 0) {
 			exit(1);
 		}
-		result = firstNumber / secondNumber;
+		result = fn / sn;
 	}
-	return result;
+	return createItem(result);
 }
 
 char isPartOfANumber(char c) {
@@ -69,7 +77,7 @@ float evaluateExpression(char* tokens, int length) {
 			number[numberIndex] = '\0';
 
 			// After number has been built push it into the numbers stack
-			push(values, atof(number));
+			push(values, createItem(atof(number)));
 
 			// We must subtract 1 at the index because the next
 			// interaction will add 1, doing this we can keep track
@@ -82,7 +90,7 @@ float evaluateExpression(char* tokens, int length) {
 
 		// Current token is an opening brace, push it to 'ops'
 		if (tokens[i] == '(') {
-			push(ops, tokens[i]);
+			push(ops, createItem(tokens[i]));
 			continue;
 		}
 
@@ -90,7 +98,7 @@ float evaluateExpression(char* tokens, int length) {
 		if (tokens[i] == ')') {
 
 			while (((char) *(peek(ops)->value)) != '(') {
-				push(values, applyOperation((char) *(pop(ops)->value), *(pop(values)->value), *(pop(values)->value)));
+				push(values, applyOperation(pop(ops), pop(values), pop(values)));
 			}
 			pop(ops);
 			continue;
@@ -102,20 +110,20 @@ float evaluateExpression(char* tokens, int length) {
 			// token, which is an operator. Apply operator on top of 'ops'
 			// to top two elements in values stack
 			while (!empty(ops) && hasPrecedence(tokens[i], *(peek(ops)->value))) {
-				push(values, applyOperation((char) *(pop(ops)->value), *(pop(values)->value), *(pop(values)->value)));
+				push(values, applyOperation(pop(ops), pop(values), pop(values)));
 			}
 
 			// Push current token to 'ops'.
-			push(ops, tokens[i]);
+			push(ops, createItem(tokens[i]));
 		}
 	}
 
-	// Entire expression has been parsed at this point, apply remaining
-	// ops to remaining values
+// Entire expression has been parsed at this point, apply remaining
+// ops to remaining values
 	while (!empty(ops)) {
-		push(values, applyOperation((char) *(pop(ops)->value), *(pop(values)->value), *(pop(values)->value)));
+		push(values, applyOperation(pop(ops), pop(values), pop(values)));
 	}
 
-	// Top of 'values' contains result, return it
+// Top of 'values' contains result, return it
 	return *(pop(values)->value);
 }
