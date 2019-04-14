@@ -332,24 +332,33 @@ void removeBTreeItem(listItem *bTreeRoot, double value) {
 	int rightDepth = 0;
 
 	// finding the minimum at right
+	listItem* rightPrevious = bTreeRoot;
 	listItem* rightNext = bTreeRoot->next;
 	while (rightNext->previous != NULL) {
+		rightNext = rightNext->previous;
 		rightDepth++;
 	}
 
 	// finding the maximum at left
+	listItem* leftPrevious = bTreeRoot;
 	listItem* leftNext = bTreeRoot->previous;
 	while (leftNext->next != NULL) {
 		leftNext = leftNext->next;
 		leftDepth++;
 	}
 
-	if (leftNext > rightNext) {
-		//grab node from left
+	if (rightDepth >= leftDepth) {
+		//grab node from right
+
+		rightNext->previous = bTreeRoot->previous;
+
+		if (bTreeRoot->previous != NULL) {
+			bTreeRoot->previous->next = rightNext;
+		}
 		return;
 	}
 
-	//grab node from right
+	//grab node from left
 	return;
 
 	return NULL;
