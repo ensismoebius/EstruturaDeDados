@@ -327,51 +327,102 @@ listItem *findBtreeItem(listItem *bTreeRoot, double value) {
 	return NULL;
 }
 
-// TODO finish it, it still not working!!!
-void removeBTreeItem(listItem *bTreeRoot, double value) {
-
-	listItem *node = findBtreeItem(bTreeRoot, value);
+listItem *findSuitableReplacementValue(listItem *node, char *comesFromLeft, char *comesFromRight) {
 
 	// finding the minimum at right
 	int rightDepth = 0;
-	listItem* rightParent = node;
 	listItem* rightSucessor = node->right;
 	while (rightSucessor->left != NULL) {
-		rightParent = rightSucessor;
 		rightSucessor = rightSucessor->left;
 		rightDepth++;
 	}
 
 	// finding the maximum at left
 	int leftDepth = 0;
-	listItem* leftParent = node;
 	listItem* leftSucessor = node->left;
 	while (leftSucessor->right != NULL) {
-		leftParent = leftSucessor;
 		leftSucessor = leftSucessor->right;
 		leftDepth++;
 	}
 
 	if (rightDepth >= leftDepth) {
-		//grab node from right
-
-		rightParent->left = rightSucessor->right;
-
-		*node->value = *rightSucessor->value;
-
-		free(rightSucessor->value);
-		free(rightSucessor);
-		return;
+		*comesFromLeft = 0;
+		*comesFromRight = 1;
+		return rightSucessor;
 	}
 
-	//grab node from left
+	*comesFromLeft = 1;
+	*comesFromRight = 0;
+	return leftSucessor;
+}
 
-	leftParent->right = leftSucessor->left;
+listItem *deleteBTreeItem(listItem *bTreeRoot, double value) {
 
-	*node->value = *leftSucessor->value;
+	if (bTreeRoot == NULL) return NULL;
 
-	free(leftSucessor->value);
-	free(leftSucessor);
+	// the value is at left
+	if (value < *bTreeRoot->value) {
+		bTreeRoot->left = deleteBTreeItem(bTreeRoot->left, value);
+		return bTreeRoot;
+	}
+
+	// the value is at right
+	if (value > *bTreeRoot->value) {
+		bTreeRoot->right = deleteBTreeItem(bTreeRoot->right, value);
+		return bTreeRoot;
+	}
+
+	if (value != *bTreeRoot->value) return bTreeRoot;
+
+	// got it! lets delete it
+
+	// its a leaf
+	if (bTreeRoot->left == NULL && bTreeRoot->right == NULL) {
+		free(bTreeRoot->value);
+		free(bTreeRoot);
+		bTreeRoot = NULL;
+		return bTreeRoot;
+	}
+
+	// its a branch with one child at right
+	if (bTreeRoot->left == NULL) {
+		listItem *nodeWillBeRemoved = bTreeRoot;
+		bTreeRoot = bTreeRoot->right;
+
+		free(nodeWillBeRemoved->value);
+		free(nodeWillBeRemoved);
+		nodeWillBeRemoved = NULL;
+
+		return bTreeRoot;
+	}
+
+	// its a branch with one child at left
+	if (bTreeRoot->right == NULL) {
+		listItem *nodeWillBeRemoved = bTreeRoot;
+		bTreeRoot = bTreeRoot->left;
+
+		free(nodeWillBeRemoved->value);
+		free(nodeWillBeRemoved);
+		nodeWillBeRemoved = NULL;
+
+		return bTreeRoot;
+	}
+
+	// its a branch with two children
+	char comesFromLeft, comesFromRight;
+
+	listItem *sucessor = findSuitableReplacementValue(bTreeRoot, &comesFromLeft, &comesFromRight);
+	*bTreeRoot->value = *sucessor->value;
+
+	if (comesFromLeft) {
+		bTreeRoot->left = deleteBTreeItem(bTreeRoot->left, *sucessor->value);
+		return bTreeRoot;
+	}
+
+	if (comesFromRight) {
+		bTreeRoot->right = deleteBTreeItem(bTreeRoot->right, *sucessor->value);
+	}
+	return bTreeRoot;
 }
 
 /**

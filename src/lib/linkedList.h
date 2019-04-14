@@ -56,10 +56,10 @@ void swapItems(list *list, int indexOne, int indexTwo);
  */
 void clearBtree(listItem *bTreeRoot);
 void addBtreeLeaf(listItem *bTreeRoot, listItem *item);
-void removeBTreeItem(listItem *bTreeRoot, double value);
 
 listItem *addBTreeItem(listItem *bTreeRoot, double value);
 listItem *findBtreeItem(listItem *bTreeRoot, double value);
+listItem *deleteBTreeItem(listItem *bTreeRoot, double value);
 
 // Recursive methods
 void showAllInOrderRecursive(listItem *bTreeRoot);
