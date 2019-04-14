@@ -328,40 +328,52 @@ listItem *findBtreeItem(listItem *bTreeRoot, double value) {
 }
 void removeBTreeItem(listItem *bTreeRoot, double value) {
 
-	int leftDepth = 0;
-	int rightDepth = 0;
+	listItem *node = findBtreeItem(bTreeRoot, value);
 
 	// finding the minimum at right
-	listItem* rightPrevious = bTreeRoot;
-	listItem* rightNext = bTreeRoot->right;
-	while (rightNext->left != NULL) {
-		rightNext = rightNext->left;
+	int rightDepth = 0;
+	listItem* rightParent = node;
+	listItem* rightSucessor = node->right;
+	while (rightSucessor->left != NULL) {
+		rightParent = rightSucessor;
+		rightSucessor = rightSucessor->left;
 		rightDepth++;
 	}
 
 	// finding the maximum at left
-	listItem* leftPrevious = bTreeRoot;
-	listItem* leftNext = bTreeRoot->left;
-	while (leftNext->right != NULL) {
-		leftNext = leftNext->right;
+	int leftDepth = 0;
+	listItem* leftParent = node;
+	listItem* leftSucessor = node->left;
+	while (leftSucessor->right != NULL) {
+		leftParent = leftSucessor;
+		leftSucessor = leftSucessor->right;
 		leftDepth++;
 	}
 
 	if (rightDepth >= leftDepth) {
 		//grab node from right
 
-		rightNext->left = bTreeRoot->left;
+		rightParent->left = rightSucessor->right;
 
-		if (bTreeRoot->left != NULL) {
-			bTreeRoot->left->right = rightNext;
-		}
+		rightSucessor->left = node->left;
+		rightSucessor->right = node->right;
+
+		free(node->value);
+		free(node);
 		return;
 	}
 
 	//grab node from left
-	return;
 
-	return NULL;
+	leftParent->right = leftSucessor->left;
+
+	leftSucessor->left = node->left;
+	leftSucessor->right = node->right;
+
+	free(node->value);
+	free(node);
+
+	node = leftSucessor;
 }
 
 /**
