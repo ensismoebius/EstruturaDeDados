@@ -10,8 +10,8 @@
 
 typedef struct li {
 	double* value;
-	struct li* next;
-	struct li* previous;
+	struct li* right;
+	struct li* left;
 } listItem;
 
 typedef struct l {

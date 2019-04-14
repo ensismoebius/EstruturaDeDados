@@ -41,10 +41,10 @@ char empty(list *list) {
 listItem *addNextItem(list *list, listItem *item) {
 
 	// "Puts" the item at the end
-	item->next = NULL;
-	item->previous = list->last;
+	item->right = NULL;
+	item->left = list->last;
 
-	if (list->last != NULL) list->last->next = item;
+	if (list->last != NULL) list->last->right = item;
 
 	if (list->first == NULL) list->first = item;
 
@@ -69,7 +69,7 @@ void showAll(list *list) {
 	listItem* l = list->first;
 	do {
 		printf("Item %f\n", *l->value);
-		l = l->next;
+		l = l->right;
 	} while (l != NULL);
 }
 
@@ -85,7 +85,7 @@ listItem *findOneByIndex(list *list, int index) {
 	listItem* pointer = list->first;
 
 	while (index--) {
-		pointer = pointer->next;
+		pointer = pointer->right;
 	}
 
 	return pointer;
@@ -99,7 +99,7 @@ listItem *findOneByValue(list *list, double value) {
 	listItem* pointer = list->first;
 
 	while (pointer != NULL && *pointer->value != value) {
-		pointer = pointer->next;
+		pointer = pointer->right;
 	}
 
 	return pointer;
@@ -113,20 +113,20 @@ void deleteByIndex(list *list, int index) {
 
 	*list->size = *list->size - 1;
 
-	if (item->previous != NULL) {
-		item->previous->next = item->next;
+	if (item->left != NULL) {
+		item->left->right = item->right;
 	}
 
-	if (item->next != NULL) {
-		item->next->previous = item->previous;
+	if (item->right != NULL) {
+		item->right->left = item->left;
 	}
 
 	if (item == list->first) {
-		list->first = item->next;
+		list->first = item->right;
 	}
 
 	if (item == list->last) {
-		list->last = item->previous;
+		list->last = item->left;
 	}
 	free(item->value);
 	free(item);
@@ -142,8 +142,8 @@ listItem *addAfter(list *list, int index, listItem *item) {
 
 		listItem* current = findOneByIndex(list, 0);
 
-		item->next = current;
-		current->previous = item;
+		item->right = current;
+		current->left = item;
 
 		list->first = item;
 		*list->size = *list->size + 1;
@@ -156,15 +156,15 @@ listItem *addAfter(list *list, int index, listItem *item) {
 	if (current == NULL) return NULL;
 
 	// the backup of the next item
-	listItem* currentNextBackup = current->next;
+	listItem* currentNextBackup = current->right;
 
-	current->next = item;
+	current->right = item;
 
-	item->next = currentNextBackup;
-	item->previous = current;
+	item->right = currentNextBackup;
+	item->left = current;
 
 	if (currentNextBackup != NULL) {
-		currentNextBackup->previous = item;
+		currentNextBackup->left = item;
 	}
 
 	*list->size = *list->size + 1;
@@ -178,29 +178,29 @@ void swapItems(list *list, int indexOne, int indexTwo) {
 	listItem* one = findOneByIndex(list, indexOne);
 	listItem* two = findOneByIndex(list, indexTwo);
 
-	if (one->next != NULL) {
-		one->next->previous = two;
+	if (one->right != NULL) {
+		one->right->left = two;
 	}
 
-	if (two->previous != NULL) {
-		two->previous->next = one;
+	if (two->left != NULL) {
+		two->left->right = one;
 	}
 
-	if (two->next != NULL) {
-		two->next->previous = one;
+	if (two->right != NULL) {
+		two->right->left = one;
 	}
 
-	if (one->previous != NULL) {
-		one->previous->next = two;
+	if (one->left != NULL) {
+		one->left->right = two;
 	}
 
-	if (one->next == two || two->next == one) {
+	if (one->right == two || two->right == one) {
 
-		one->next = two->next;
-		two->next = one;
+		one->right = two->right;
+		two->right = one;
 
-		two->previous = one->previous;
-		one->previous = two;
+		two->left = one->left;
+		one->left = two;
 		return;
 	}
 
@@ -216,13 +216,13 @@ void swapItems(list *list, int indexOne, int indexTwo) {
 		list->last = one;
 	}
 
-	listItem* item = one->next;
-	one->next = two->next;
-	two->next = item;
+	listItem* item = one->right;
+	one->right = two->right;
+	two->right = item;
 
-	item = two->previous;
-	two->previous = one->previous;
-	one->previous = item;
+	item = two->left;
+	two->left = one->left;
+	one->left = item;
 }
 
 /**
@@ -234,8 +234,8 @@ void joinLists(list* list1, list* list2) {
 		return;
 	}
 
-	list1->last->next = list2->first;
-	list2->first->previous = list1->last;
+	list1->last->right = list2->first;
+	list2->first->left = list1->last;
 
 	list1->last = list2->last;
 	list2->first = list1->first;
@@ -256,9 +256,9 @@ listItem *pop(list *list) {
 
 	if (item == NULL) return NULL;
 
-	if (item->previous != NULL) {
-		list->last = item->previous;
-		item->previous->next = NULL;
+	if (item->left != NULL) {
+		list->last = item->left;
+		item->left->right = NULL;
 	} else {
 		list->last = list->first = NULL;
 	}
@@ -286,7 +286,7 @@ void clearList(list *list) {
 	listItem* b = NULL;
 
 	while (l != NULL) {
-		b = l->previous;
+		b = l->left;
 
 		free(l->value);
 		free(l);
@@ -318,9 +318,9 @@ listItem *findBtreeItem(listItem *bTreeRoot, double value) {
 
 	// Not yet: Trying another branches
 	if (value > *bTreeRoot->value) {
-		findBtreeItem(bTreeRoot->next, value);
+		findBtreeItem(bTreeRoot->right, value);
 	} else {
-		findBtreeItem(bTreeRoot->previous, value);
+		findBtreeItem(bTreeRoot->left, value);
 	}
 
 	// Nothing found!
@@ -333,27 +333,27 @@ void removeBTreeItem(listItem *bTreeRoot, double value) {
 
 	// finding the minimum at right
 	listItem* rightPrevious = bTreeRoot;
-	listItem* rightNext = bTreeRoot->next;
-	while (rightNext->previous != NULL) {
-		rightNext = rightNext->previous;
+	listItem* rightNext = bTreeRoot->right;
+	while (rightNext->left != NULL) {
+		rightNext = rightNext->left;
 		rightDepth++;
 	}
 
 	// finding the maximum at left
 	listItem* leftPrevious = bTreeRoot;
-	listItem* leftNext = bTreeRoot->previous;
-	while (leftNext->next != NULL) {
-		leftNext = leftNext->next;
+	listItem* leftNext = bTreeRoot->left;
+	while (leftNext->right != NULL) {
+		leftNext = leftNext->right;
 		leftDepth++;
 	}
 
 	if (rightDepth >= leftDepth) {
 		//grab node from right
 
-		rightNext->previous = bTreeRoot->previous;
+		rightNext->left = bTreeRoot->left;
 
-		if (bTreeRoot->previous != NULL) {
-			bTreeRoot->previous->next = rightNext;
+		if (bTreeRoot->left != NULL) {
+			bTreeRoot->left->right = rightNext;
 		}
 		return;
 	}
@@ -376,22 +376,22 @@ void addBtreeLeaf(listItem *bTreeRoot, listItem *item) {
 	}
 
 	if (*item->value > *bTreeRoot->value) {
-		if (bTreeRoot->next == NULL) {
-			bTreeRoot->next = item;
+		if (bTreeRoot->right == NULL) {
+			bTreeRoot->right = item;
 			return;
 		}
 
-		addBtreeLeaf(bTreeRoot->next, item);
+		addBtreeLeaf(bTreeRoot->right, item);
 		return;
 	}
 
 	if (*item->value < *bTreeRoot->value) {
-		if (bTreeRoot->previous == NULL) {
-			bTreeRoot->previous = item;
+		if (bTreeRoot->left == NULL) {
+			bTreeRoot->left = item;
 			return;
 		}
 
-		addBtreeLeaf(bTreeRoot->previous, item);
+		addBtreeLeaf(bTreeRoot->left, item);
 		return;
 	}
 
@@ -399,20 +399,20 @@ void addBtreeLeaf(listItem *bTreeRoot, listItem *item) {
 
 void showAllInOrderRecursive(listItem *bTreeRoot) {
 	if (bTreeRoot == NULL) return;
-	showAllInOrderRecursive(bTreeRoot->previous);
+	showAllInOrderRecursive(bTreeRoot->left);
 	printf("%f\n", *bTreeRoot->value);
-	showAllInOrderRecursive(bTreeRoot->next);
+	showAllInOrderRecursive(bTreeRoot->right);
 }
 void showAllPreOrderRecursive(listItem *bTreeRoot) {
 	if (bTreeRoot == NULL) return;
 	printf("%f\n", *bTreeRoot->value);
-	showAllInOrderRecursive(bTreeRoot->previous);
-	showAllInOrderRecursive(bTreeRoot->next);
+	showAllInOrderRecursive(bTreeRoot->left);
+	showAllInOrderRecursive(bTreeRoot->right);
 }
 void showAllPostOrderRecursive(listItem *bTreeRoot) {
 	if (bTreeRoot == NULL) return;
-	showAllInOrderRecursive(bTreeRoot->previous);
-	showAllInOrderRecursive(bTreeRoot->next);
+	showAllInOrderRecursive(bTreeRoot->left);
+	showAllInOrderRecursive(bTreeRoot->right);
 	printf("%f\n", *bTreeRoot->value);
 }
 
@@ -423,7 +423,7 @@ void showAllInOrderIterative(listItem *bTreeRoot) {
 	do {
 		while (bTreeRoot != NULL) {
 			push(pointersStack, createItem((long) bTreeRoot));
-			bTreeRoot = bTreeRoot->previous;
+			bTreeRoot = bTreeRoot->left;
 		}
 
 		if (!empty(pointersStack)) {
@@ -436,7 +436,7 @@ void showAllInOrderIterative(listItem *bTreeRoot) {
 
 			printf("%f\n", *bTreeRoot->value);
 
-			bTreeRoot = bTreeRoot->next;
+			bTreeRoot = bTreeRoot->right;
 
 			// Free memory
 			free(i);
@@ -452,7 +452,7 @@ void showAllPreOrderIterative(listItem *bTreeRoot) {
 		while (bTreeRoot != NULL) {
 			push(pointersStack, createItem((long) bTreeRoot));
 			printf("%f\n", *bTreeRoot->value);
-			bTreeRoot = bTreeRoot->previous;
+			bTreeRoot = bTreeRoot->left;
 		}
 
 		if (!empty(pointersStack)) {
@@ -463,7 +463,7 @@ void showAllPreOrderIterative(listItem *bTreeRoot) {
 			// Retrieves the listItem itself
 			bTreeRoot = (void*) (long) *i->value;
 
-			bTreeRoot = bTreeRoot->next;
+			bTreeRoot = bTreeRoot->right;
 
 			// Free memory
 			free(i);
@@ -479,7 +479,7 @@ void showAllPostOrderIterative(listItem *bTreeRoot) {
 	do {
 		while (bTreeRoot != NULL) {
 			push(pointersStack, createItem((long) bTreeRoot));
-			bTreeRoot = bTreeRoot->previous;
+			bTreeRoot = bTreeRoot->left;
 		}
 
 		while (bTreeRoot == NULL && !empty(pointersStack)) {
@@ -490,13 +490,13 @@ void showAllPostOrderIterative(listItem *bTreeRoot) {
 			// Retrieves the listItem itself
 			bTreeRoot = (void*) (long) *i->value;
 
-			if (bTreeRoot->next == NULL || bTreeRoot->next == previous) {
+			if (bTreeRoot->right == NULL || bTreeRoot->right == previous) {
 				printf("%f\n", *bTreeRoot->value);
 				pop(pointersStack);
 				previous = bTreeRoot;
 				bTreeRoot = NULL;
 			} else {
-				bTreeRoot = bTreeRoot->next;
+				bTreeRoot = bTreeRoot->right;
 			}
 		}
 
