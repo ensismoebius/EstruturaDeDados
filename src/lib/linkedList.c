@@ -318,14 +318,16 @@ listItem *findBtreeItem(listItem *bTreeRoot, double value) {
 
 	// Not yet: Trying another branches
 	if (value > *bTreeRoot->value) {
-		findBtreeItem(bTreeRoot->right, value);
+		return findBtreeItem(bTreeRoot->right, value);
 	} else {
-		findBtreeItem(bTreeRoot->left, value);
+		return findBtreeItem(bTreeRoot->left, value);
 	}
 
 	// Nothing found!
 	return NULL;
 }
+
+// TODO finish it, it still not working!!!
 void removeBTreeItem(listItem *bTreeRoot, double value) {
 
 	listItem *node = findBtreeItem(bTreeRoot, value);
@@ -355,11 +357,10 @@ void removeBTreeItem(listItem *bTreeRoot, double value) {
 
 		rightParent->left = rightSucessor->right;
 
-		rightSucessor->left = node->left;
-		rightSucessor->right = node->right;
+		*node->value = *rightSucessor->value;
 
-		free(node->value);
-		free(node);
+		free(rightSucessor->value);
+		free(rightSucessor);
 		return;
 	}
 
@@ -367,13 +368,10 @@ void removeBTreeItem(listItem *bTreeRoot, double value) {
 
 	leftParent->right = leftSucessor->left;
 
-	leftSucessor->left = node->left;
-	leftSucessor->right = node->right;
+	*node->value = *leftSucessor->value;
 
-	free(node->value);
-	free(node);
-
-	node = leftSucessor;
+	free(leftSucessor->value);
+	free(leftSucessor);
 }
 
 /**

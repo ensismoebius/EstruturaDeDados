@@ -20,7 +20,7 @@ int main(int argc, char **argv) {
 	addBTreeItem(root, 20);
 	addBTreeItem(root, 18);
 
-	removeBTreeItem(root, 12);
+	removeBTreeItem(root, 5);
 
 	showAllInOrderRecursive(root);
 
