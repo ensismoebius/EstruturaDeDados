@@ -1,7 +1,73 @@
 #include "linkedList.h"
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <stddef.h>
+
+listItem* rotateCounterClockwise(listItem* oldRoot) {
+	listItem* newRoot;
+	listItem* temp;
+
+	// do the rotations
+	newRoot = oldRoot->right;
+	temp = newRoot->left;
+	newRoot->left = oldRoot;
+	oldRoot->right = temp;
+
+	// update balance factors
+	oldRoot->fatball = max(oldRoot->left->fatball, oldRoot->right->fatball) + 1;
+	newRoot->fatball = max(newRoot->left->fatball, newRoot->right->fatball) + 1;
+
+	return newRoot;
+}
+
+listItem* rotateClockwise(listItem* oldRoot) {
+	listItem* newRoot;
+	listItem* temp;
+
+	newRoot = oldRoot->left;
+
+	temp = newRoot->right;
+
+	newRoot->right = oldRoot;
+	oldRoot->left = temp;
+
+	// update balance factors
+	oldRoot->fatball = max(oldRoot->left->fatball, oldRoot->right->fatball) + 1;
+	newRoot->fatball = max(newRoot->left->fatball, newRoot->right->fatball) + 1;
+
+	return newRoot;
+}
+
+listItem* doMaintance(listItem* bTreeRoot, char fatball, char fatballRight, char fatballLeft) {
+
+	// balance factor is negative
+	if (fatball > 0 && fatballRight > 0) {
+		// rotate to left
+		printf("to the left");
+		bTreeRoot = rotateCounterClockwise(bTreeRoot);
+	}
+
+	if (fatball < 0 && fatballLeft < 0) {
+		// rotate to the right
+		printf("to the right");
+		bTreeRoot = rotateClockwise(bTreeRoot);
+	}
+
+	if (fatball < 0 && fatballLeft > 0) {
+		// double rotate: left and right
+		printf("to the left and right");
+		bTreeRoot->left = rotateCounterClockwise(bTreeRoot->left);
+		bTreeRoot = rotateClockwise(bTreeRoot);
+	}
+
+	if (fatball > 0 && fatballLeft < 0) {
+		// double rotate: right and left
+		printf("to the right and left");
+		bTreeRoot->right = rotateClockwise(bTreeRoot->right);
+		bTreeRoot = rotateCounterClockwise(bTreeRoot);
+	}
+
+	return bTreeRoot;
+}
 
 /**
  * Creates an listItem and returns a pointer to it
@@ -9,6 +75,7 @@
 listItem *createItem(double value) {
 	listItem *newItem = malloc(sizeof(listItem));
 	newItem->value = malloc(sizeof(double));
+	newItem->fatball = 0;
 	*newItem->value = value;
 	return newItem;
 }
@@ -298,20 +365,23 @@ void clearList(list *list) {
 	list->first = list->last = NULL;
 }
 
-listItem *addBTreeItem(listItem *bTreeRoot, double value) {
+listItem* addBTreeItem(listItem* bTreeRoot, double value) {
+
+	// There is no item in binary tree, create the root
+	if (bTreeRoot == NULL) {
+		printf("Null list!!");
+		return NULL;
+	}
 
 	// Create new item
 	listItem* newItem = createItem(value);
 
-	// There is no item in binary tree, create the root
-	if (bTreeRoot == NULL) return newItem;
-
 	// There is already some items add to the final
-	addBtreeLeaf(bTreeRoot, newItem);
+	bTreeRoot = addBtreeLeaf(bTreeRoot, newItem);
 
-	return newItem;
+	return bTreeRoot;
 }
-listItem *findBtreeItem(listItem *bTreeRoot, double value) {
+listItem* findBtreeItem(listItem* bTreeRoot, double value) {
 
 	// We got it!!
 	if (*bTreeRoot->value == value) return bTreeRoot;
@@ -363,12 +433,14 @@ listItem *deleteBTreeItem(listItem *bTreeRoot, double value) {
 	// the value is at left
 	if (value < *bTreeRoot->value) {
 		bTreeRoot->left = deleteBTreeItem(bTreeRoot->left, value);
+		bTreeRoot->fatball++;
 		return bTreeRoot;
 	}
 
 	// the value is at right
 	if (value > *bTreeRoot->value) {
 		bTreeRoot->right = deleteBTreeItem(bTreeRoot->right, value);
+		bTreeRoot->fatball--;
 		return bTreeRoot;
 	}
 
@@ -429,33 +501,55 @@ listItem *deleteBTreeItem(listItem *bTreeRoot, double value) {
  * Don't use this, instead use addBTreeItem
  * @see addBTreeItem
  */
-void addBtreeLeaf(listItem *bTreeRoot, listItem *item) {
+listItem* addBtreeLeaf(listItem* bTreeRoot, listItem* item) {
 
 	if (*bTreeRoot->value == *item->value) {
 		printf("Can't add existing values!");
-		return;
+		return bTreeRoot;
 	}
 
 	if (*item->value > *bTreeRoot->value) {
 		if (bTreeRoot->right == NULL) {
 			bTreeRoot->right = item;
-			return;
+			bTreeRoot->fatball++;
+			return bTreeRoot;
 		}
 
-		addBtreeLeaf(bTreeRoot->right, item);
-		return;
+		bTreeRoot->right = addBtreeLeaf(bTreeRoot->right, item);
+		bTreeRoot->fatball++;
+
+		// Maintain as an AVL
+		if (bTreeRoot->fatball > 1) {
+			char fatballRight = bTreeRoot->right == NULL ? 0 : bTreeRoot->right->fatball;
+			char fatballLeft = bTreeRoot->left == NULL ? 0 : bTreeRoot->left->fatball;
+			bTreeRoot = doMaintance(bTreeRoot, bTreeRoot->fatball, fatballRight, fatballLeft);
+		}
+
+		return bTreeRoot;
 	}
 
 	if (*item->value < *bTreeRoot->value) {
 		if (bTreeRoot->left == NULL) {
 			bTreeRoot->left = item;
-			return;
+			bTreeRoot->fatball--;
+			return bTreeRoot;
+
 		}
 
-		addBtreeLeaf(bTreeRoot->left, item);
-		return;
+		bTreeRoot->left = addBtreeLeaf(bTreeRoot->left, item);
+		bTreeRoot->fatball--;
+
+		// Maintain as an AVL
+		if (bTreeRoot->fatball < -1) {
+			char fatballRight = bTreeRoot->right == NULL ? 0 : bTreeRoot->right->fatball;
+			char fatballLeft = bTreeRoot->left == NULL ? 0 : bTreeRoot->left->fatball;
+			bTreeRoot = doMaintance(bTreeRoot, bTreeRoot->fatball, fatballRight, fatballLeft);
+		}
+
+		return bTreeRoot;
 	}
 
+	return bTreeRoot;
 }
 
 void showAllInOrderRecursive(listItem *bTreeRoot) {

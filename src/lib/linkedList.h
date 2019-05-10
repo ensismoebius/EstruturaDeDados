@@ -9,6 +9,7 @@
 #define LIB_LINKEDLIST_
 
 typedef struct li {
+	char fatball;
 	double* value;
 	struct li* right;
 	struct li* left;
@@ -55,7 +56,7 @@ void swapItems(list *list, int indexOne, int indexTwo);
  * behaves like a binary tree
  */
 void clearBtree(listItem *bTreeRoot);
-void addBtreeLeaf(listItem *bTreeRoot, listItem *item);
+listItem* addBtreeLeaf(listItem *bTreeRoot, listItem *item);
 
 listItem *addBTreeItem(listItem *bTreeRoot, double value);
 listItem *findBtreeItem(listItem *bTreeRoot, double value);
