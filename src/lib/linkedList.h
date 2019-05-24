@@ -25,57 +25,65 @@ typedef struct l {
  * Creates a list and returns a pointer
  * to the first item
  */
-list *createList();
+list* createList();
 
-char empty(list *list);
+char empty(list* list);
 
 /*
  * If you want that the list
  * behave like an stack use this
  */
-listItem *pop(list *list);
-listItem *peek(list *list);
-listItem *push(list *list, listItem *item);
+listItem* pop(list* list);
+listItem* peek(list* list);
+listItem* push(list* list, listItem* item);
 
 /*
  * If you want that the list behaves like a regular
  * list use this
  */
-listItem *addNextItem(list *list, listItem *item);
-listItem *findOneByIndex(list *list, int index);
-listItem *findOneByValue(list *list, double value);
-listItem *addAfter(list *list, int index, listItem *item);
+listItem* addNextItem(list* list, listItem* item);
+listItem* findOneByIndex(list* list, int index);
+listItem* findOneByValue(list* list, double value);
+listItem* addAfter(list *list, int index, listItem *item);
 
-void clearList(list *list);
+void clearList(list* list);
 void joinLists(list* list1, list* list2);
-void deleteByIndex(list *list, int index);
-void swapItems(list *list, int indexOne, int indexTwo);
+void deleteByIndex(list* list, int index);
+void swapItems(list* list, int indexOne, int indexTwo);
 
 /*
  * Use this if you want that the list
  * behaves like a binary tree
  */
-void clearBtree(listItem *bTreeRoot);
-listItem* addBtreeLeaf(listItem *bTreeRoot, listItem *item);
+void clearBtree(listItem* bTreeRoot);
+listItem* addBtreeLeaf(listItem* bTreeRoot, listItem* item);
 
-listItem *addBTreeItem(listItem *bTreeRoot, double value);
-listItem *findBtreeItem(listItem *bTreeRoot, double value);
-listItem *deleteBTreeItem(listItem *bTreeRoot, double value);
+listItem* addBTreeItem(listItem* bTreeRoot, double value);
+listItem* findBtreeItem(listItem* bTreeRoot, double value);
+listItem* deleteBTreeItem(listItem* bTreeRoot, double value);
 
 // Recursive methods
-void showAllInOrderRecursive(listItem *bTreeRoot);
-void showAllPreOrderRecursive(listItem *bTreeRoot);
-void showAllPostOrderRecursive(listItem *bTreeRoot);
+void showAllInOrderRecursive(listItem* bTreeRoot);
+void showAllPreOrderRecursive(listItem* bTreeRoot);
+void showAllPostOrderRecursive(listItem* bTreeRoot);
 
 // Iterative methods
-void showAllInOrderIterative(listItem *bTreeRoot);
-void showAllPreOrderIterative(listItem *bTreeRoot);
-void showAllPostOrderIterative(listItem *bTreeRoot);
+void showAllInOrderIterative(listItem* bTreeRoot);
+void showAllPreOrderIterative(listItem* bTreeRoot);
+void showAllPostOrderIterative(listItem* bTreeRoot);
+
+/*
+ * Use this if you want that the list
+ * behaves like a binary tree
+ */
+listItem* heapPop(list* heap);
+listItem* heapPeek(list* heap);
+void heapAdd(double value, list* heap);
 
 /*
  * You can use this for all types
  */
-void showAll(list *list);
-listItem *createItem(double value);
+void showAll(list* list);
+listItem* createItem(double value);
 
 #endif /* LIB_LINKEDLIST_ */

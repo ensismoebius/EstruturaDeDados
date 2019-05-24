@@ -1,6 +1,7 @@
-#include "linkedList.h"
-
+#include <stdio.h>
 #include <stddef.h>
+#include <stdlib.h>
+#include "linkedList.h"
 
 listItem* rotateCounterClockwise(listItem* oldRoot) {
 	listItem* newRoot;
@@ -13,8 +14,8 @@ listItem* rotateCounterClockwise(listItem* oldRoot) {
 	oldRoot->right = temp;
 
 	// update balance factors
-	oldRoot->fatball = max(oldRoot->left->fatball, oldRoot->right->fatball) + 1;
-	newRoot->fatball = max(newRoot->left->fatball, newRoot->right->fatball) + 1;
+	newRoot->left->fatball -= 2; // updates old root
+	newRoot->fatball -= 1; // update new root
 
 	return newRoot;
 }
@@ -31,13 +32,17 @@ listItem* rotateClockwise(listItem* oldRoot) {
 	oldRoot->left = temp;
 
 	// update balance factors
-	oldRoot->fatball = max(oldRoot->left->fatball, oldRoot->right->fatball) + 1;
-	newRoot->fatball = max(newRoot->left->fatball, newRoot->right->fatball) + 1;
+	newRoot->left->fatball += 2; // updates old root
+	newRoot->fatball += 1; // update new root
 
 	return newRoot;
 }
 
-listItem* doMaintance(listItem* bTreeRoot, char fatball, char fatballRight, char fatballLeft) {
+listItem* doMaintance(listItem* bTreeRoot) {
+
+	char fatball = bTreeRoot->fatball;
+	char fatballLeft = bTreeRoot->left == NULL ? 0 : bTreeRoot->left->fatball;
+	char fatballRight = bTreeRoot->right == NULL ? 0 : bTreeRoot->right->fatball;
 
 	// balance factor is negative
 	if (fatball > 0 && fatballRight > 0) {
@@ -105,7 +110,7 @@ char empty(list *list) {
  * Adds an item to the list and returns
  * a pointer to the added value
  */
-listItem *addNextItem(list *list, listItem *item) {
+listItem* addNextItem(list* list, listItem* item) {
 
 	// "Puts" the item at the end
 	item->right = NULL;
@@ -126,7 +131,7 @@ listItem *addNextItem(list *list, listItem *item) {
 /**
  * Show all items within a nice format
  */
-void showAll(list *list) {
+void showAll(list* list) {
 
 	if (list->size == 0) {
 		printf("Empty list\n");
@@ -143,11 +148,14 @@ void showAll(list *list) {
 /**
  * Returns the item given the index
  */
-listItem *findOneByIndex(list *list, int index) {
+listItem* findOneByIndex(list* list, int index) {
 	if (*list->size <= index || index < 0) {
 		printf("Index out of the bounds");
 		exit(1);
 	}
+
+	if (index == 0) return list->first;
+	if (index == *list->size - 1) return list->last;
 
 	listItem* pointer = list->first;
 
@@ -161,7 +169,7 @@ listItem *findOneByIndex(list *list, int index) {
 /**
  * Returns the item given the value
  */
-listItem *findOneByValue(list *list, double value) {
+listItem* findOneByValue(list* list, double value) {
 
 	listItem* pointer = list->first;
 
@@ -203,7 +211,7 @@ void deleteByIndex(list *list, int index) {
  * Insert an item after another one given its index
  * @index -1 inserts before the first item
  */
-listItem *addAfter(list *list, int index, listItem *item) {
+listItem* addAfter(list* list, int index, listItem* item) {
 
 	if (index == -1) {
 
@@ -241,9 +249,37 @@ listItem *addAfter(list *list, int index, listItem *item) {
 /**
  * Swap items given its indexes
  */
-void swapItems(list *list, int indexOne, int indexTwo) {
+void swapItems(list* list, int indexOne, int indexTwo) {
 	listItem* one = findOneByIndex(list, indexOne);
 	listItem* two = findOneByIndex(list, indexTwo);
+
+	// If one is next to another
+	if (one->right == two || two->right == one) {
+
+		one->right = two->right;
+		two->right = one;
+
+		two->left = one->left;
+		one->left = two;
+
+		if (list->first == one || list->last == one) {
+			if (list->first == one) {
+				list->first = two;
+			}
+			if (list->last == one) {
+				list->first = two;
+			}
+		} else if (list->first == two || list->last == two) {
+			if (list->first == two) {
+				list->first = one;
+			}
+			if (list->last == two) {
+				list->last = one;
+			}
+		}
+
+		return;
+	}
 
 	if (one->right != NULL) {
 		one->right->left = two;
@@ -259,16 +295,6 @@ void swapItems(list *list, int indexOne, int indexTwo) {
 
 	if (one->left != NULL) {
 		one->left->right = two;
-	}
-
-	if (one->right == two || two->right == one) {
-
-		one->right = two->right;
-		two->right = one;
-
-		two->left = one->left;
-		one->left = two;
-		return;
 	}
 
 	if (one == list->first) {
@@ -314,11 +340,11 @@ void joinLists(list* list1, list* list2) {
 	list2->size = list1->size;
 }
 
-listItem *push(list *list, listItem *item) {
+listItem* push(list* list, listItem* item) {
 	return addNextItem(list, item);
 }
 
-listItem *pop(list *list) {
+listItem* pop(list* list) {
 	listItem* item = list->last;
 
 	if (item == NULL) return NULL;
@@ -331,19 +357,19 @@ listItem *pop(list *list) {
 	}
 
 	// item->previous = NULL;
-	*list->size += -1;
+	*list->size -= 1;
 
 	return item;
 }
 
-listItem *peek(list *list) {
+listItem* peek(list* list) {
 	return list->last;
 }
 
 /**
  * Erase entire list
  */
-void clearList(list *list) {
+void clearList(list* list) {
 
 	if (list == NULL) {
 		return;
@@ -397,7 +423,7 @@ listItem* findBtreeItem(listItem* bTreeRoot, double value) {
 	return NULL;
 }
 
-listItem *findSuitableReplacementValue(listItem *node, char *comesFromLeft, char *comesFromRight) {
+listItem* findSuitableReplacementValue(listItem* node, char* comesFromLeft, char* comesFromRight) {
 
 	// finding the minimum at right
 	int rightDepth = 0;
@@ -426,7 +452,7 @@ listItem *findSuitableReplacementValue(listItem *node, char *comesFromLeft, char
 	return leftSucessor;
 }
 
-listItem *deleteBTreeItem(listItem *bTreeRoot, double value) {
+listItem* deleteBTreeItem(listItem* bTreeRoot, double value) {
 
 	if (bTreeRoot == NULL) return NULL;
 
@@ -458,7 +484,7 @@ listItem *deleteBTreeItem(listItem *bTreeRoot, double value) {
 
 	// its a branch with one child at right
 	if (bTreeRoot->left == NULL) {
-		listItem *nodeWillBeRemoved = bTreeRoot;
+		listItem* nodeWillBeRemoved = bTreeRoot;
 		bTreeRoot = bTreeRoot->right;
 
 		free(nodeWillBeRemoved->value);
@@ -470,7 +496,7 @@ listItem *deleteBTreeItem(listItem *bTreeRoot, double value) {
 
 	// its a branch with one child at left
 	if (bTreeRoot->right == NULL) {
-		listItem *nodeWillBeRemoved = bTreeRoot;
+		listItem* nodeWillBeRemoved = bTreeRoot;
 		bTreeRoot = bTreeRoot->left;
 
 		free(nodeWillBeRemoved->value);
@@ -483,7 +509,7 @@ listItem *deleteBTreeItem(listItem *bTreeRoot, double value) {
 	// its a branch with two children
 	char comesFromLeft, comesFromRight;
 
-	listItem *sucessor = findSuitableReplacementValue(bTreeRoot, &comesFromLeft, &comesFromRight);
+	listItem* sucessor = findSuitableReplacementValue(bTreeRoot, &comesFromLeft, &comesFromRight);
 	*bTreeRoot->value = *sucessor->value;
 
 	if (comesFromLeft) {
@@ -520,9 +546,7 @@ listItem* addBtreeLeaf(listItem* bTreeRoot, listItem* item) {
 
 		// Maintain as an AVL
 		if (bTreeRoot->fatball > 1) {
-			char fatballRight = bTreeRoot->right == NULL ? 0 : bTreeRoot->right->fatball;
-			char fatballLeft = bTreeRoot->left == NULL ? 0 : bTreeRoot->left->fatball;
-			bTreeRoot = doMaintance(bTreeRoot, bTreeRoot->fatball, fatballRight, fatballLeft);
+			bTreeRoot = doMaintance(bTreeRoot);
 		}
 
 		return bTreeRoot;
@@ -541,9 +565,7 @@ listItem* addBtreeLeaf(listItem* bTreeRoot, listItem* item) {
 
 		// Maintain as an AVL
 		if (bTreeRoot->fatball < -1) {
-			char fatballRight = bTreeRoot->right == NULL ? 0 : bTreeRoot->right->fatball;
-			char fatballLeft = bTreeRoot->left == NULL ? 0 : bTreeRoot->left->fatball;
-			bTreeRoot = doMaintance(bTreeRoot, bTreeRoot->fatball, fatballRight, fatballLeft);
+			bTreeRoot = doMaintance(bTreeRoot);
 		}
 
 		return bTreeRoot;
@@ -552,26 +574,26 @@ listItem* addBtreeLeaf(listItem* bTreeRoot, listItem* item) {
 	return bTreeRoot;
 }
 
-void showAllInOrderRecursive(listItem *bTreeRoot) {
+void showAllInOrderRecursive(listItem* bTreeRoot) {
 	if (bTreeRoot == NULL) return;
 	showAllInOrderRecursive(bTreeRoot->left);
 	printf("%f\n", *bTreeRoot->value);
 	showAllInOrderRecursive(bTreeRoot->right);
 }
-void showAllPreOrderRecursive(listItem *bTreeRoot) {
+void showAllPreOrderRecursive(listItem* bTreeRoot) {
 	if (bTreeRoot == NULL) return;
 	printf("%f\n", *bTreeRoot->value);
 	showAllInOrderRecursive(bTreeRoot->left);
 	showAllInOrderRecursive(bTreeRoot->right);
 }
-void showAllPostOrderRecursive(listItem *bTreeRoot) {
+void showAllPostOrderRecursive(listItem* bTreeRoot) {
 	if (bTreeRoot == NULL) return;
 	showAllInOrderRecursive(bTreeRoot->left);
 	showAllInOrderRecursive(bTreeRoot->right);
 	printf("%f\n", *bTreeRoot->value);
 }
 
-void showAllInOrderIterative(listItem *bTreeRoot) {
+void showAllInOrderIterative(listItem* bTreeRoot) {
 
 	list *pointersStack = createList();
 
@@ -599,9 +621,9 @@ void showAllInOrderIterative(listItem *bTreeRoot) {
 
 	} while (!empty(pointersStack) || bTreeRoot != NULL);
 }
-void showAllPreOrderIterative(listItem *bTreeRoot) {
+void showAllPreOrderIterative(listItem* bTreeRoot) {
 
-	list *pointersStack = createList();
+	list* pointersStack = createList();
 
 	do {
 		while (bTreeRoot != NULL) {
@@ -626,10 +648,10 @@ void showAllPreOrderIterative(listItem *bTreeRoot) {
 
 	} while (!empty(pointersStack) || bTreeRoot != NULL);
 }
-void showAllPostOrderIterative(listItem *bTreeRoot) {
+void showAllPostOrderIterative(listItem* bTreeRoot) {
 
-	list *pointersStack = createList();
-	listItem *previous = NULL;
+	list* pointersStack = createList();
+	listItem* previous = NULL;
 
 	do {
 		while (bTreeRoot != NULL) {
@@ -656,4 +678,95 @@ void showAllPostOrderIterative(listItem *bTreeRoot) {
 		}
 
 	} while (!empty(pointersStack));
+}
+
+// If you want the list behaves like a heap:
+
+static int getHeapParentIndex(int index) {
+	return (index - 1) / 2;
+}
+
+static int getHeapLeftChildIndex(int index) {
+	return index * 2 + 1;
+}
+
+static int getHeapRightChildIndex(int index) {
+	return index * 2 + 2;
+}
+
+static char hasHeapLeftChild(int index, list* heap) {
+	return getHeapLeftChildIndex(index) < *heap->size;
+}
+
+static char hasHeapRightChild(int index, list* heap) {
+	return getHeapRightChildIndex(index) < *heap->size;
+}
+
+static char hasHeapParent(int index, list* heap) {
+	return getHeapParentIndex(index) >= 0;
+}
+
+static listItem* getHeapParent(int index, list* heap) {
+	return findOneByIndex(heap, getHeapParentIndex(index));
+}
+static listItem* getHeapLeftChild(int index, list* heap) {
+	return findOneByIndex(heap, getHeapLeftChildIndex(index));
+}
+static listItem* getHeapRightChild(int index, list* heap) {
+	return findOneByIndex(heap, getHeapRightChildIndex(index));
+}
+
+static void heapfyUp(list* heap) {
+	int index = *heap->size - 1;
+
+	while (hasHeapParent(index, heap) && *getHeapParent(index, heap)->value > *findOneByIndex(heap, index)->value) {
+		swapItems(heap, index, getHeapParentIndex(index));
+		index = getHeapParentIndex(index);
+	}
+}
+
+static void heapfyDown(list* heap) {
+	int index = 0;
+
+	while (hasHeapLeftChild(index, heap)) {
+		int smallerChildIndex = getHeapLeftChildIndex(index);
+
+		listItem* leftChild = getHeapLeftChild(index, heap);
+		listItem* rightChild = getHeapRightChild(index, heap);
+
+		if (hasHeapRightChild(index, heap) && *rightChild->value < *leftChild->value) {
+			smallerChildIndex = getHeapRightChildIndex(index);
+		}
+
+		if (*findOneByIndex(heap, index)->value < *findOneByIndex(heap, smallerChildIndex)->value) {
+			break;
+		} else {
+			swapItems(heap, index, smallerChildIndex);
+		}
+		index = smallerChildIndex;
+	}
+}
+
+void heapAdd(double value, list* heap) {
+	addNextItem(heap, createItem(value));
+	heapfyUp(heap);
+}
+
+listItem* heapPeek(list* heap) {
+	if (*heap->size == 0) {
+		printf("The heap is empty");
+		return 0;
+	}
+	return findOneByIndex(heap, 0);
+}
+listItem* heapPop(list* heap) {
+	if (heap->size == 0) return NULL;
+
+	listItem* item = createItem(*heap->first->value);
+
+	swapItems(heap, 0, *heap->size - 1);
+	deleteByIndex(heap, *heap->size - 1);
+
+	heapfyDown(heap);
+	return item;
 }

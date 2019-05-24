@@ -16,20 +16,20 @@ listItem *applyOperation(listItem *operation, listItem *firstNumber, listItem *s
 	free(secondNumber);
 
 	switch (op) {
-	case '+':
-		result = fn + sn;
-		break;
-	case '-':
-		result = fn - sn;
-		break;
-	case '*':
-		result = fn * sn;
-		break;
-	case '/':
-		if (sn == 0) {
-			exit(1);
-		}
-		result = fn / sn;
+		case '+':
+			result = fn + sn;
+			break;
+		case '-':
+			result = fn - sn;
+			break;
+		case '*':
+			result = fn * sn;
+			break;
+		case '/':
+			if (sn == 0) {
+				exit(1);
+			}
+			result = fn / sn;
 	}
 	return createItem(result);
 }
@@ -118,12 +118,12 @@ float evaluateExpression(char* tokens, int length) {
 		}
 	}
 
-// Entire expression has been parsed at this point, apply remaining
-// ops to remaining values
+	// Entire expression has been parsed at this point, apply remaining
+	// ops to remaining values
 	while (!empty(ops)) {
 		push(values, applyOperation(pop(ops), pop(values), pop(values)));
 	}
 
-// Top of 'values' contains result, return it
+	// Top of 'values' contains result, return it
 	return *(pop(values)->value);
 }

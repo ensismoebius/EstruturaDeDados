@@ -1,92 +1,14 @@
+#include <stdio.h>
 #include "lib/linkedList.h"
-
-//typedef struct lttr {
-//	char value;
-//	unsigned int amount;
-//} letter;
-//
-//unsigned int g(char value) {
-//	return (int) value;
-//}
-//
-//unsigned int h(char* value, int mapSize) {
-//	unsigned int wordLength = strlen(value);
-//	unsigned int gfirst = g(value[0]);
-//	unsigned int glast = g(value[wordLength - 1]);
-//
-//	return (wordLength + gfirst + glast) % mapSize;
-//}
-//
-//void addLetterOcurrency(char letterCode, letter *list, unsigned int letterListSize, int *counter) {
-//	unsigned int index;
-//
-//	for (index = 0; index < letterListSize; index++) {
-//		if (list[index].value == letterCode) {
-//			list[index].amount++;
-//			return;
-//		}
-//	}
-//
-//	index--;
-//	while (list[index].value != '\0')
-//		index--;
-//
-//	list[index].amount = 1;
-//	list[index].value = letterCode;
-//	*counter = *counter + 1;
-//}
-//
-//letter *createListOfLetters(int amountOfWords) {
-//
-//	// Give to us the amount of maximum needed positions
-//	amountOfWords = (amountOfWords * 2) < 128 ? (amountOfWords * 2) : 128;
-//
-//	letter listOfLetters[amountOfWords];
-//
-//	// initializes the array
-//	for (int i = 0; i < amountOfWords * 2; i++) {
-//		listOfLetters[i].value = '\0';
-//		listOfLetters[i].amount = 0;
-//	}
-//
-//	return listOfLetters;
-//}
 
 int main(int argc, char **argv) {
 
-//	const int wordsLength = 5;
-//
-//	int listOfLettersOccupied = 0;
-//
-//	char *listOfWords[wordsLength];
-//	listOfWords[0] = "Andre";
-//	listOfWords[1] = "Furlan";
-//	listOfWords[2] = "Camila";
-//	listOfWords[3] = "Rodrigues";
-//	listOfWords[4] = "Oliveira";
-//
-//	letter *listOfLetters = createListOfLetters(wordsLength);
-//
-//	for (int i = 0; i < 5; i++) {
-//		char* word = listOfWords[i];
-//		char first = tolower(word[0]);
-//		char last = tolower(word[strlen(word) - 1]);
-//
-//		addLetterOcurrency(first, listOfLetters, 10, &listOfLettersOccupied);
-//		addLetterOcurrency(last, listOfLetters, 10, &listOfLettersOccupied);
-//	}
-
-	listItem *root = createItem(0);
-
-	root = addBTreeItem(root, 1);
-	root = addBTreeItem(root, 2);
-	root = addBTreeItem(root, 3);
-	root = addBTreeItem(root, 4);
-	root = addBTreeItem(root, 5);
-	root = addBTreeItem(root, 6);
-	root = addBTreeItem(root, 7);
-	root = addBTreeItem(root, 8);
-	root = addBTreeItem(root, 9);
+//	listItem *root = createItem(8);
+//	root = addBTreeItem(root, 4);
+//	root = addBTreeItem(root, 10);
+//	root = addBTreeItem(root, 9);
+//	root = addBTreeItem(root, 15);
+//	root = addBTreeItem(root, 12);
 
 //	root = deleteBTreeItem(root, 5);
 //	root = deleteBTreeItem(root, 3);
@@ -105,14 +27,7 @@ int main(int argc, char **argv) {
 //	root = deleteBTreeItem(root, 18);
 //	root = deleteBTreeItem(root, 12);
 
-	showAllInOrderRecursive(root);
-
-//	char texto[] = "((1+2)*4)-11";
-//	float result = evaluateExpression(texto, strlen(texto));
-//	printf("%f", result);
-
-//	trim(texto);
-//	puts(texto);
+//	showAllInOrderRecursive(root);
 
 //	list* list2 = createList();
 //	list* list1 = createList();
@@ -161,5 +76,34 @@ int main(int argc, char **argv) {
 //	clearList(list3);
 //
 //	showAll(list3);
+
+//	listItem* heapPop(list* heap);
+//	listItem* heapPeek(list* heap);
+//	void heapAdd(double value, list* heap);
+
+//TODO implementar o heapsort
+//TODO consertar esse heap, tá bugado
+
+	list* heap = createList();
+
+	heapAdd(10, heap);
+	heapAdd(30, heap);
+	heapAdd(5, heap);
+	heapAdd(20, heap);
+	heapAdd(15, heap);
+	heapAdd(17, heap);
+	heapAdd(1, heap);
+	heapAdd(3, heap);
+
+	listItem* peeked = heapPeek(heap);
+	printf("Top heap item: %lf\n", *peeked->value);
+
+	listItem* poped = heapPop(heap);
+	printf("Heap removed item: %lf\n", *poped->value);
+
+	peeked = heapPeek(heap);
+	printf("Top heap item: %lf\n", *peeked->value);
+
+	clearList(heap);
 	return 0;
 }
