@@ -1,5 +1,23 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "lib/linkedList.h"
+
+void heapSort(float* array, unsigned int length) {
+	list* heap = createList();
+
+	for (unsigned int i = 0; i < length; i++) {
+		heapAdd(array[i], heap);
+	}
+
+	for (unsigned int i = 0; i < length; i++) {
+		array[i] = (float) *heapPeek(heap)->value;
+		swapItems(heap, 0, *heap->size - 1);
+		deleteByIndex(heap, *heap->size - 1);
+		heapfyDown(heap);
+	}
+
+	clearList(heap);
+}
 
 int main(int argc, char **argv) {
 
@@ -81,8 +99,21 @@ int main(int argc, char **argv) {
 //	listItem* heapPeek(list* heap);
 //	void heapAdd(double value, list* heap);
 
-//TODO implementar o heapsort
-//TODO consertar esse heap, tá bugado
+	float* array = malloc(sizeof(float) * 8);
+	array[0] = 10;
+	array[1] = 30;
+	array[2] = 5;
+	array[3] = 20;
+	array[4] = 15;
+	array[5] = 17;
+	array[6] = 1;
+	array[7] = 3;
+
+	heapSort(array, 8);
+
+	for (int i = 0; i < 8; i++) {
+		printf("%f\n", array[i]);
+	}
 
 	list* heap = createList();
 

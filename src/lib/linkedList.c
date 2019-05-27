@@ -249,73 +249,14 @@ listItem* addAfter(list* list, int index, listItem* item) {
 /**
  * Swap items given its indexes
  */
-void swapItems(list* list, int indexOne, int indexTwo) {
-	listItem* one = findOneByIndex(list, indexOne);
-	listItem* two = findOneByIndex(list, indexTwo);
+void swapItems(list* list, int indexA, int indexB) {
+	listItem* a = findOneByIndex(list, indexA);
+	listItem* b = findOneByIndex(list, indexB);
 
-	// If one is next to another
-	if (one->right == two || two->right == one) {
+	double aValue = *a->value;
 
-		one->right = two->right;
-		two->right = one;
-
-		two->left = one->left;
-		one->left = two;
-
-		if (list->first == one || list->last == one) {
-			if (list->first == one) {
-				list->first = two;
-			}
-			if (list->last == one) {
-				list->first = two;
-			}
-		} else if (list->first == two || list->last == two) {
-			if (list->first == two) {
-				list->first = one;
-			}
-			if (list->last == two) {
-				list->last = one;
-			}
-		}
-
-		return;
-	}
-
-	if (one->right != NULL) {
-		one->right->left = two;
-	}
-
-	if (two->left != NULL) {
-		two->left->right = one;
-	}
-
-	if (two->right != NULL) {
-		two->right->left = one;
-	}
-
-	if (one->left != NULL) {
-		one->left->right = two;
-	}
-
-	if (one == list->first) {
-		list->first = two;
-	} else if (two == list->first) {
-		list->first = one;
-	}
-
-	if (one == list->last) {
-		list->last = two;
-	} else if (two == list->last) {
-		list->last = one;
-	}
-
-	listItem* item = one->right;
-	one->right = two->right;
-	two->right = item;
-
-	item = two->left;
-	two->left = one->left;
-	one->left = item;
+	*a->value = *b->value;
+	*b->value = aValue;
 }
 
 /**
@@ -356,7 +297,7 @@ listItem* pop(list* list) {
 		list->last = list->first = NULL;
 	}
 
-	// item->previous = NULL;
+// item->previous = NULL;
 	*list->size -= 1;
 
 	return item;
@@ -393,39 +334,39 @@ void clearList(list* list) {
 
 listItem* addBTreeItem(listItem* bTreeRoot, double value) {
 
-	// There is no item in binary tree, create the root
+// There is no item in binary tree, create the root
 	if (bTreeRoot == NULL) {
 		printf("Null list!!");
 		return NULL;
 	}
 
-	// Create new item
+// Create new item
 	listItem* newItem = createItem(value);
 
-	// There is already some items add to the final
+// There is already some items add to the final
 	bTreeRoot = addBtreeLeaf(bTreeRoot, newItem);
 
 	return bTreeRoot;
 }
 listItem* findBtreeItem(listItem* bTreeRoot, double value) {
 
-	// We got it!!
+// We got it!!
 	if (*bTreeRoot->value == value) return bTreeRoot;
 
-	// Not yet: Trying another branches
+// Not yet: Trying another branches
 	if (value > *bTreeRoot->value) {
 		return findBtreeItem(bTreeRoot->right, value);
 	} else {
 		return findBtreeItem(bTreeRoot->left, value);
 	}
 
-	// Nothing found!
+// Nothing found!
 	return NULL;
 }
 
 listItem* findSuitableReplacementValue(listItem* node, char* comesFromLeft, char* comesFromRight) {
 
-	// finding the minimum at right
+// finding the minimum at right
 	int rightDepth = 0;
 	listItem* rightSucessor = node->right;
 	while (rightSucessor->left != NULL) {
@@ -433,7 +374,7 @@ listItem* findSuitableReplacementValue(listItem* node, char* comesFromLeft, char
 		rightDepth++;
 	}
 
-	// finding the maximum at left
+// finding the maximum at left
 	int leftDepth = 0;
 	listItem* leftSucessor = node->left;
 	while (leftSucessor->right != NULL) {
@@ -456,14 +397,14 @@ listItem* deleteBTreeItem(listItem* bTreeRoot, double value) {
 
 	if (bTreeRoot == NULL) return NULL;
 
-	// the value is at left
+// the value is at left
 	if (value < *bTreeRoot->value) {
 		bTreeRoot->left = deleteBTreeItem(bTreeRoot->left, value);
 		bTreeRoot->fatball++;
 		return bTreeRoot;
 	}
 
-	// the value is at right
+// the value is at right
 	if (value > *bTreeRoot->value) {
 		bTreeRoot->right = deleteBTreeItem(bTreeRoot->right, value);
 		bTreeRoot->fatball--;
@@ -472,9 +413,9 @@ listItem* deleteBTreeItem(listItem* bTreeRoot, double value) {
 
 	if (value != *bTreeRoot->value) return bTreeRoot;
 
-	// got it! lets delete it
+// got it! lets delete it
 
-	// its a leaf
+// its a leaf
 	if (bTreeRoot->left == NULL && bTreeRoot->right == NULL) {
 		free(bTreeRoot->value);
 		free(bTreeRoot);
@@ -482,7 +423,7 @@ listItem* deleteBTreeItem(listItem* bTreeRoot, double value) {
 		return bTreeRoot;
 	}
 
-	// its a branch with one child at right
+// its a branch with one child at right
 	if (bTreeRoot->left == NULL) {
 		listItem* nodeWillBeRemoved = bTreeRoot;
 		bTreeRoot = bTreeRoot->right;
@@ -494,7 +435,7 @@ listItem* deleteBTreeItem(listItem* bTreeRoot, double value) {
 		return bTreeRoot;
 	}
 
-	// its a branch with one child at left
+// its a branch with one child at left
 	if (bTreeRoot->right == NULL) {
 		listItem* nodeWillBeRemoved = bTreeRoot;
 		bTreeRoot = bTreeRoot->left;
@@ -506,7 +447,7 @@ listItem* deleteBTreeItem(listItem* bTreeRoot, double value) {
 		return bTreeRoot;
 	}
 
-	// its a branch with two children
+// its a branch with two children
 	char comesFromLeft, comesFromRight;
 
 	listItem* sucessor = findSuitableReplacementValue(bTreeRoot, &comesFromLeft, &comesFromRight);
@@ -716,7 +657,7 @@ static listItem* getHeapRightChild(int index, list* heap) {
 	return findOneByIndex(heap, getHeapRightChildIndex(index));
 }
 
-static void heapfyUp(list* heap) {
+void heapfyUp(list* heap) {
 	int index = *heap->size - 1;
 
 	while (hasHeapParent(index, heap) && *getHeapParent(index, heap)->value > *findOneByIndex(heap, index)->value) {
@@ -725,16 +666,13 @@ static void heapfyUp(list* heap) {
 	}
 }
 
-static void heapfyDown(list* heap) {
+void heapfyDown(list* heap) {
 	int index = 0;
 
 	while (hasHeapLeftChild(index, heap)) {
 		int smallerChildIndex = getHeapLeftChildIndex(index);
 
-		listItem* leftChild = getHeapLeftChild(index, heap);
-		listItem* rightChild = getHeapRightChild(index, heap);
-
-		if (hasHeapRightChild(index, heap) && *rightChild->value < *leftChild->value) {
+		if (hasHeapRightChild(index, heap) && *getHeapRightChild(index, heap)->value < *getHeapLeftChild(index, heap)->value) {
 			smallerChildIndex = getHeapRightChildIndex(index);
 		}
 

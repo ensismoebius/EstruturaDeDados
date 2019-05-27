@@ -79,6 +79,8 @@ void showAllPostOrderIterative(listItem* bTreeRoot);
 listItem* heapPop(list* heap);
 listItem* heapPeek(list* heap);
 void heapAdd(double value, list* heap);
+void heapfyDown(list* heap);
+void heapfyUp(list* heap);
 
 /*
  * You can use this for all types
