@@ -1,23 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "lib/linkedList.h"
-
-void heapSort(float* array, unsigned int length) {
-	list* heap = createList();
-
-	for (unsigned int i = 0; i < length; i++) {
-		heapAdd(array[i], heap);
-	}
-
-	for (unsigned int i = 0; i < length; i++) {
-		array[i] = (float) *heapPeek(heap)->value;
-		swapItems(heap, 0, *heap->size - 1);
-		deleteByIndex(heap, *heap->size - 1);
-		heapfyDown(heap);
-	}
-
-	clearList(heap);
-}
+#include "lib/heap.h"
 
 int main(int argc, char **argv) {
 
