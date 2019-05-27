@@ -7,9 +7,7 @@
 
 #ifndef LIB_HEAP_H_
 #define LIB_HEAP_H_
-
 #include "linkedList.h"
-
 /*
  * Use this if you want that the list
  * behaves like a heap

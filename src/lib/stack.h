@@ -7,7 +7,7 @@
 
 #ifndef LIB_STACK_H_
 #define LIB_STACK_H_
-
+#include "linkedList.h"
 /*
  * If you want that the list
  * behave like an stack use this

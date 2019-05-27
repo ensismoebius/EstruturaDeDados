@@ -2,6 +2,7 @@
 
 #include "linkedList.h"
 #include "strFuncs.h"
+#include "stack.h"
 
 listItem *applyOperation(listItem *operation, listItem *firstNumber, listItem *secondNumber) {
 
