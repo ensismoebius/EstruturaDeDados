@@ -4,6 +4,7 @@
  *  Created on: 27 de mai de 2019
  *      Author: ensis
  */
+#include <stdio.h>
 #include <stdlib.h>
 #include "linkedList.h"
 
