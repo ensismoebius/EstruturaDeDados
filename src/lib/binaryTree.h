@@ -14,9 +14,9 @@
  */
 void clearBtree(listItem* bTreeRoot);
 listItem* addBtreeLeaf(listItem* bTreeRoot, listItem* item);
-listItem* addBTreeItem(listItem* bTreeRoot, double value);
+listItem* addBinaryTreeItem(listItem* bTreeRoot, double value);
 listItem* findBtreeItem(listItem* bTreeRoot, double value);
-listItem* deleteBTreeItem(listItem* bTreeRoot, double value);
+listItem* deleteBinaryTreeItem(listItem* bTreeRoot, double value);
 
 // Recursive methods
 void showAllInOrderRecursive(listItem* bTreeRoot);

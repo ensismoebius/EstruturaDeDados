@@ -80,7 +80,7 @@ static listItem* doMaintance(listItem* bTreeRoot) {
 	return bTreeRoot;
 }
 
-listItem* addBTreeItem(listItem* bTreeRoot, double value) {
+listItem* addBinaryTreeItem(listItem* bTreeRoot, double value) {
 
 	// There is no item in binary tree, create the root
 	if (bTreeRoot == NULL) {
@@ -141,20 +141,20 @@ listItem* findSuitableReplacementValue(listItem* node, char* comesFromLeft, char
 	return leftSucessor;
 }
 
-listItem* deleteBTreeItem(listItem* bTreeRoot, double value) {
+listItem* deleteBinaryTreeItem(listItem* bTreeRoot, double value) {
 
 	if (bTreeRoot == NULL) return NULL;
 
 	// the value is at left
 	if (value < *bTreeRoot->value) {
-		bTreeRoot->left = deleteBTreeItem(bTreeRoot->left, value);
+		bTreeRoot->left = deleteBinaryTreeItem(bTreeRoot->left, value);
 		bTreeRoot->fatball++;
 		return bTreeRoot;
 	}
 
 	// the value is at right
 	if (value > *bTreeRoot->value) {
-		bTreeRoot->right = deleteBTreeItem(bTreeRoot->right, value);
+		bTreeRoot->right = deleteBinaryTreeItem(bTreeRoot->right, value);
 		bTreeRoot->fatball--;
 		return bTreeRoot;
 	}
@@ -202,19 +202,19 @@ listItem* deleteBTreeItem(listItem* bTreeRoot, double value) {
 	*bTreeRoot->value = *sucessor->value;
 
 	if (comesFromLeft) {
-		bTreeRoot->left = deleteBTreeItem(bTreeRoot->left, *sucessor->value);
+		bTreeRoot->left = deleteBinaryTreeItem(bTreeRoot->left, *sucessor->value);
 		return bTreeRoot;
 	}
 
 	if (comesFromRight) {
-		bTreeRoot->right = deleteBTreeItem(bTreeRoot->right, *sucessor->value);
+		bTreeRoot->right = deleteBinaryTreeItem(bTreeRoot->right, *sucessor->value);
 	}
 	return bTreeRoot;
 }
 
 /**
- * Don't use this, instead use addBTreeItem
- * @see addBTreeItem
+ * Don't use this, instead use addBinaryTreeItem
+ * @see addBinaryTreeItem
  */
 listItem* addBtreeLeaf(listItem* bTreeRoot, listItem* item) {
 

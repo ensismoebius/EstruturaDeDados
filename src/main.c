@@ -5,28 +5,28 @@
 int main(int argc, char **argv) {
 
 //	listItem *root = createItem(8);
-//	root = addBTreeItem(root, 4);
-//	root = addBTreeItem(root, 10);
-//	root = addBTreeItem(root, 9);
-//	root = addBTreeItem(root, 15);
-//	root = addBTreeItem(root, 12);
+//	root = addBinaryTreeItem(root, 4);
+//	root = addBinaryTreeItem(root, 10);
+//	root = addBinaryTreeItem(root, 9);
+//	root = addBinaryTreeItem(root, 15);
+//	root = addBinaryTreeItem(root, 12);
 
-//	root = deleteBTreeItem(root, 5);
-//	root = deleteBTreeItem(root, 3);
-//	root = deleteBTreeItem(root, 1);
-//	root = deleteBTreeItem(root, 7);
-//	root = deleteBTreeItem(root, 9);
-//	root = deleteBTreeItem(root, 8);
-//	root = deleteBTreeItem(root, 11);
-//	root = deleteBTreeItem(root, 10);
+//	root = deleteBinaryTreeItem(root, 5);
+//	root = deleteBinaryTreeItem(root, 3);
+//	root = deleteBinaryTreeItem(root, 1);
+//	root = deleteBinaryTreeItem(root, 7);
+//	root = deleteBinaryTreeItem(root, 9);
+//	root = deleteBinaryTreeItem(root, 8);
+//	root = deleteBinaryTreeItem(root, 11);
+//	root = deleteBinaryTreeItem(root, 10);
 //
-//	root = deleteBTreeItem(root, 14);
-//	root = deleteBTreeItem(root, 17);
-//	root = deleteBTreeItem(root, 13);
-//	root = deleteBTreeItem(root, 13.5);
-//	root = deleteBTreeItem(root, 20);
-//	root = deleteBTreeItem(root, 18);
-//	root = deleteBTreeItem(root, 12);
+//	root = deleteBinaryTreeItem(root, 14);
+//	root = deleteBinaryTreeItem(root, 17);
+//	root = deleteBinaryTreeItem(root, 13);
+//	root = deleteBinaryTreeItem(root, 13.5);
+//	root = deleteBinaryTreeItem(root, 20);
+//	root = deleteBinaryTreeItem(root, 18);
+//	root = deleteBinaryTreeItem(root, 12);
 
 //	showAllInOrderRecursive(root);
 
@@ -82,42 +82,43 @@ int main(int argc, char **argv) {
 //	listItem* heapPeek(list* heap);
 //	void heapAdd(double value, list* heap);
 
-	float* array = malloc(sizeof(float) * 8);
-	array[0] = 10;
-	array[1] = 30;
-	array[2] = 5;
-	array[3] = 20;
-	array[4] = 15;
-	array[5] = 17;
-	array[6] = 1;
-	array[7] = 3;
+//	float* array = malloc(sizeof(float) * 8);
+//	array[0] = 10;
+//	array[1] = 30;
+//	array[2] = 5;
+//	array[3] = 20;
+//	array[4] = 15;
+//	array[5] = 17;
+//	array[6] = 1;
+//	array[7] = 3;
+//
+//	heapSort(array, 8);
+//
+//	for (int i = 0; i < 8; i++) {
+//		printf("%f\n", array[i]);
+//	}
+//
+//	list* heap = createList();
+//
+//	heapAdd(10, heap);
+//	heapAdd(30, heap);
+//	heapAdd(5, heap);
+//	heapAdd(20, heap);
+//	heapAdd(15, heap);
+//	heapAdd(17, heap);
+//	heapAdd(1, heap);
+//	heapAdd(3, heap);
+//
+//	listItem* peeked = heapPeek(heap);
+//	printf("Top heap item: %lf\n", *peeked->value);
+//
+//	listItem* poped = heapPop(heap);
+//	printf("Heap removed item: %lf\n", *poped->value);
+//
+//	peeked = heapPeek(heap);
+//	printf("Top heap item: %lf\n", *peeked->value);
+//
+//	clearList(heap);
 
-	heapSort(array, 8);
-
-	for (int i = 0; i < 8; i++) {
-		printf("%f\n", array[i]);
-	}
-
-	list* heap = createList();
-
-	heapAdd(10, heap);
-	heapAdd(30, heap);
-	heapAdd(5, heap);
-	heapAdd(20, heap);
-	heapAdd(15, heap);
-	heapAdd(17, heap);
-	heapAdd(1, heap);
-	heapAdd(3, heap);
-
-	listItem* peeked = heapPeek(heap);
-	printf("Top heap item: %lf\n", *peeked->value);
-
-	listItem* poped = heapPop(heap);
-	printf("Heap removed item: %lf\n", *poped->value);
-
-	peeked = heapPeek(heap);
-	printf("Top heap item: %lf\n", *peeked->value);
-
-	clearList(heap);
 	return 0;
 }
