@@ -4,12 +4,12 @@
 
 int main(int argc, char **argv) {
 
-//	listItem *root = createItem(8);
-//	root = addBinaryTreeItem(root, 4);
-//	root = addBinaryTreeItem(root, 10);
-//	root = addBinaryTreeItem(root, 9);
-//	root = addBinaryTreeItem(root, 15);
-//	root = addBinaryTreeItem(root, 12);
+	listItem *root = createItem(8);
+	root = addBinaryTreeItem(root, 4);
+	root = addBinaryTreeItem(root, 10);
+	root = addBinaryTreeItem(root, 9);
+	root = addBinaryTreeItem(root, 15);
+	root = addBinaryTreeItem(root, 12);
 
 //	root = deleteBinaryTreeItem(root, 5);
 //	root = deleteBinaryTreeItem(root, 3);

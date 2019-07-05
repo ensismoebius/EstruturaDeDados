@@ -23,7 +23,6 @@ listItem* pop(list* list) {
 		list->last = list->first = NULL;
 	}
 
-// item->previous = NULL;
 	*list->size -= 1;
 
 	return item;
