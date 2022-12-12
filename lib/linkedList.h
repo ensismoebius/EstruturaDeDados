@@ -9,7 +9,7 @@
 #define LIB_LINKEDLIST_
 
 typedef struct li {
-	char fatball;
+    char auxiliaryData;
 	double* value;
 	struct li* right;
 	struct li* left;
